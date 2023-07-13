@@ -9,7 +9,7 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 def pytest_addoption(parser):
     parser.addoption("--browser", default="chrome")
-    parser.addoption("--maximize", action="store_true")
+    parser.addoption("--maximize", action="store_true", default=True)
     parser.addoption("--headless", action="store_true")
     parser.addoption("--url", action="store", default="http://10.0.2.15:8081")
 
