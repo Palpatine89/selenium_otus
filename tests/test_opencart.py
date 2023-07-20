@@ -7,6 +7,7 @@ from page_objects.RegisterPage import RegisterPage
 
 
 def test_main_page(browser):
+    """Тест наличия элементов на главной странице"""
     browser.get(browser.url)
     browser.find_element(*MainPage.CART)
     browser.find_element(*MainPage.LOGO)
@@ -16,6 +17,7 @@ def test_main_page(browser):
 
 
 def test_tablet_page(browser):
+    """Тест наличия элементов на странице tablet"""
     browser.get(browser.url + "/tablet")
     browser.find_element(*TabletPage.GRID)
     browser.find_element(*TabletPage.LIST)
@@ -25,6 +27,7 @@ def test_tablet_page(browser):
 
 
 def test_product_card_page(browser):
+    """Тест наличия элементов на странице продукта"""
     browser.get(browser.url + "/tablet/samsung-galaxy-tab-10-1")
     browser.find_element(*ProductPage.BUTTON_CART)
     browser.find_element(*ProductPage.TAB_DESCRIPTION)
@@ -34,6 +37,7 @@ def test_product_card_page(browser):
 
 
 def test_admin_page(browser):
+    """Тест наличия элементов на странице admin"""
     browser.get(browser.url + "/admin")
     browser.find_element(*AdminPage.USERNAME)
     browser.find_element(*AdminPage.PASSWORD)
@@ -43,6 +47,7 @@ def test_admin_page(browser):
 
 
 def test_register_page(browser):
+    """Тест наличия элементов на странице register"""
     browser.get(browser.url + "/index.php?route=account/register")
     browser.find_element(*RegisterPage.FIRTSNAME)
     browser.find_element(*RegisterPage.PASSWORD)
@@ -53,30 +58,37 @@ def test_register_page(browser):
 
 @pytest.mark.parametrize('currency', ('EUR', 'GBP', 'USD'))
 def test_switch_currency(browser, currency):
+    """Тест переключения валют"""
     browser.get(browser.url)
     MainPage(browser).switch_currency(currency)
 
 
 def test_add_new_product(browser):
+    """Тест добавления нового продукта"""
     browser.get(browser.url + "/admin")
-    AdminPage(browser).admin_login()
-    AdminPage(browser).open_catalog()
-    AdminPage(browser).add_new_product()
-    AdminPage(browser).find_product()
-    AdminPage(browser).check_added_product()
+    admin_page = AdminPage(browser)
+    admin_page.admin_login()
+    admin_page.open_catalog()
+    admin_page.add_new_product()
+    admin_page.find_product()
+    admin_page.check_added_product()
 
 
 def test_del_product(browser):
+    """Тест удаления продукта"""
     browser.get(browser.url + "/admin")
-    AdminPage(browser).admin_login()
-    AdminPage(browser).open_catalog()
-    AdminPage(browser).add_new_product()
-    AdminPage(browser).find_product()
-    AdminPage(browser).del_product()
-    AdminPage(browser).check_deleted_product()
+    admin_page = AdminPage(browser)
+    admin_page.admin_login()
+    admin_page.open_catalog()
+    admin_page.add_new_product()
+    admin_page.find_product()
+    admin_page.del_product()
+    admin_page.check_deleted_product()
 
 
 def test_register_user(browser):
+    """Тест регистриции пользователя"""
     browser.get(browser.url + "/index.php?route=account/register")
-    RegisterPage(browser).register_user()
-    RegisterPage(browser).check_register_user()
+    register_page = RegisterPage(browser)
+    register_page.register_user()
+    register_page.check_register_user()
