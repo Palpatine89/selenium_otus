@@ -1,3 +1,5 @@
+import allure
+
 from selenium.webdriver.common.by import By
 from page_objects.BasePage import BasePage
 
@@ -15,6 +17,7 @@ class MainPage(BasePage):
     CURRENCY_DROPDOWN = (By.CSS_SELECTOR, "#top .btn-group .dropdown-menu")
     CURRENCY_VALUE = (By.CSS_SELECTOR, "#form-currency strong")
 
+    @allure.step("Переключаю валюту")
     def switch_currency(self, name):
         self.click(self.BUTTON_CURRENCY)
         if name == "EUR":
@@ -25,5 +28,3 @@ class MainPage(BasePage):
             self.click(self.BUTTON_DOLLAR)
         else:
             raise AssertionError(f"Валюта {name} отсутствует")
-
-

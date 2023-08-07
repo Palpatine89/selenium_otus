@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.by import By
 from page_objects.BasePage import BasePage
 from page_objects.elements.LoginPage import User
@@ -17,6 +18,7 @@ class RegisterPage(BasePage):
     CONTINUE_BTN = (By.CSS_SELECTOR, "input[type=submit]")
     SUCCESS_REGISTER = (By.CSS_SELECTOR, "#common-success")
 
+    @allure.step("Регистрирую пользователя")
     def register_user(self):
         self._element(self.FIRTSNAME).send_keys(User.FIRST_NAME)
         self._element(self.LAST_NAME).send_keys(User.LAST_NAME)
@@ -27,6 +29,7 @@ class RegisterPage(BasePage):
         self.click(self.PRIVATE_POLICY)
         self.click(self.CONTINUE_BTN)
 
+    @allure.step("Проверяю что новый пользователь зарегистрировался")
     def check_register_user(self):
         new_user = self._wait_element(self.SUCCESS_REGISTER)
         assert new_user is not None, 'Новый пользователь не добавлен!'

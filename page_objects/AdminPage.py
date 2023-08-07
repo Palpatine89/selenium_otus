@@ -1,3 +1,5 @@
+import allure
+
 from selenium.webdriver.common.by import By
 from page_objects.BasePage import BasePage
 from page_objects.elements.LoginPage import Admin
@@ -32,14 +34,17 @@ class AdminPage(BasePage):
     DELETE_BTN = (By.CSS_SELECTOR, '[data-original-title="Delete"]')
     NO_RESULT = (By.XPATH, '//td[contains(text(),"No results!")]')
 
+    @allure.step("Авторизация")
     def admin_login(self):
         self._element(self.USERNAME).send_keys(Admin.LOGIN)
         self._element(self.PASSWORD).send_keys(Admin.PASSWORD)
         self.click(self.BUTTON_SUBMIT)
 
+    @allure.step("Открываю каталог")
     def open_catalog(self):
         self.click(self.CATALOG_BTN)
 
+    @allure.step("Добавляю новый продукт в каталог")
     def add_new_product(self):
         self.click(self.PRODUCTS_BTN)
         self.click(self.ADD_NEW_PRODUCT_BTN)
@@ -50,19 +55,22 @@ class AdminPage(BasePage):
         self._element(self.PRODUCT_PRICE).send_keys(Product.PRICE)
         self.click(self.SAVE_NEW_PRODUCT_BTN)
 
+    @allure.step("Нахожу продукт")
     def find_product(self):
         self._element(self.FILTER_BY_NAME_FIELD).send_keys(Product.NAME)
         self.click(self.FILTER_BTN)
 
+    @allure.step("Проверяю наличие добавленного продукта")
     def check_added_product(self):
         added_product = self._wait_element(self.ADDED_PRODUCT)
         assert added_product is not None, 'Product not added!'
 
+    @allure.step("Удаляю продукт")
     def del_product(self):
         self.click(self.CHECK_BOX_PRODUCT)
         self.click(self.DELETE_BTN)
-        self.accept_allert()
+        self.accept_alert()
 
+    @allure.step("Проверяю что продукт удален")
     def check_deleted_product(self):
         assert self._wait_element(self.NO_RESULT).text == 'No results!', 'Product not deleted!'
-
