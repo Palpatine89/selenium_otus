@@ -14,7 +14,7 @@ pipeline {
         steps {
            catchError {
               script {
-      	    docker.image('selenoid/chrome:92.0')
+      	    docker.image('selenoid/chrome:115.0')
       	      }
            }
         }
