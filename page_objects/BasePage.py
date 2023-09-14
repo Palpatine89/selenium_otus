@@ -1,5 +1,6 @@
 import logging
 import allure
+import os
 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -14,8 +15,11 @@ class BasePage:
         self.__config_logger()
 
     def __config_logger(self):
+        project_directory = os.path.dirname(os.path.abspath(__file__))
+        logs_directory = os.path.join(project_directory, "..", "logs")
+        log_file_path = os.path.join(logs_directory, f"{self.browser.test_name}.log")
         self.logger = logging.getLogger(type(self).__name__)
-        file_handler = logging.FileHandler(f"/home/dissident/git/selenium_otus/logs/{self.browser.test_name}.log")
+        file_handler = logging.FileHandler(log_file_path)
         file_handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
         self.logger.addHandler(file_handler)
         self.logger.setLevel(level=self.browser.log_level)
