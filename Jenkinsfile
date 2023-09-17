@@ -15,7 +15,10 @@ pipeline {
                 catchError {
                     script {
                         docker.image('python-web-tests2').inside() {
-                            sh "pytest -n 2 ${CMD_PARAMS}"
+                            // Создаем каталог allure-results и устанавливаем правильные разрешения
+                            sh "mkdir -p allure-results"
+                            sh "chmod 777 allure-results"
+                            sh "pytest -n 2"
                         }
                     }
                 }
@@ -28,7 +31,7 @@ pipeline {
                     jdk: '',
                     properties: [],
                     reportBuildPolicy: 'ALWAYS',
-                    results: [[path: 'allure_reports']]
+                    results: [[path: 'allure-results']]
                 ])
             }
         }
