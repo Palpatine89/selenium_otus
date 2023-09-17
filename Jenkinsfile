@@ -1,43 +1,30 @@
 pipeline {
     agent any
     stages {
-        stage("Build image") {
+        stage('Build image') {
             steps {
-                catchError {
-                    script {
-                        docker.build("python-web-tests2", "-f Dockerfile .")
-                    }
+                script {
+                    docker.build("-t python-web-tests2 -f Dockerfile .")
                 }
             }
         }
-        stage("Run tests") {
+        stage('Run tests') {
             steps {
-                catchError {
-                    script {
-                        // Запускаем Docker-контейнер с созданным образом
-                        def myImage = docker.image('python-web-tests2')
-                        myImage.inside("--entrypoint=''") {
-                            sh "pytest -n 2 --alluredir=../allure-results -v"
-                        }
-                    }
+                script {
+                    docker.image('python-web-tests2').run('-v /var/lib/jenkins/workspace:/var/lib/jenkins/workspace python-web-tests2 pytest -n 2 --alluredir=../allure-results -v')
                 }
             }
         }
         stage('Reports') {
             steps {
-                catchError {
-                    script {
-                        // Убедитесь, что путь к allure-results правильно настроен
-                        sh "ls -la allure-results"
-                        allure([
-                            includeProperties: false,
-                            jdk: '',
-                            properties: [],
-                            reportBuildPolicy: 'ALWAYS',
-                            results: [[path: 'allure-results']]
-                        ])
-                    }
-                }
+                sh 'ls -la /var/lib/jenkins/workspace/test/allure-results'
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    properties: [],
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: '/var/lib/jenkins/workspace/test/allure-results']]
+                ])
             }
         }
     }
