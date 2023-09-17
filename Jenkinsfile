@@ -10,6 +10,19 @@ pipeline {
                 }
             }
         }
+        stage("Run tests") {
+            steps {
+                catchError {
+                    script {
+                        // Запускаем Docker-контейнер с созданным образом
+                        def myImage = docker.image('python-web-tests2')
+                        myImage.inside() {
+                            sh "pytest -n 2 --alluredir=../allure-results -v"
+                        }
+                    }
+                }
+            }
+        }
         stage('Reports') {
             steps {
                 catchError {
