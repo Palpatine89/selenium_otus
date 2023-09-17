@@ -4,7 +4,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    docker.build("-t python-web-tests2 -f Dockerfile .")
+                    docker.build("python-web-tests2", "-f Dockerfile .")
                 }
             }
         }
