@@ -15,7 +15,7 @@ pipeline {
                 catchError {
                     script {
                         docker.image('python-web-tests2').inside() {
-                            sh "pytest -n 2 --reruns 1 ${CMD_PARAMS}"
+                            sh "pytest -n 2 ${CMD_PARAMS}"
                         }
                     }
                 }
