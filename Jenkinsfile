@@ -18,7 +18,7 @@ pipeline {
                             // Создаем каталог allure-results и устанавливаем правильные разрешения
                             sh "mkdir -p allure-results"
                             sh "chmod 777 allure-results"
-                            sh "pytest -n 2"
+                            sh "pytest -n 2 --alluredir=../allure-results -v"
                         }
                     }
                 }
@@ -26,13 +26,19 @@ pipeline {
         }
         stage('Reports') {
             steps {
-                allure([
-                    includeProperties: false,
-                    jdk: '',
-                    properties: [],
-                    reportBuildPolicy: 'ALWAYS',
-                    results: [[path: 'allure-results']]
-                ])
+                catchError {
+                    script {
+                        // Убедитесь, что путь к allure-results правильно настроен
+                        sh "ls -la allure-results"
+                        allure([
+                            includeProperties: false,
+                            jdk: '',
+                            properties: [],
+                            reportBuildPolicy: 'ALWAYS',
+                            results: [[path: 'allure-results']]
+                        ])
+                    }
+                }
             }
         }
     }
