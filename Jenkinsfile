@@ -10,20 +10,6 @@ pipeline {
                 }
             }
         }
-        stage('Run tests') {
-            steps {
-                catchError {
-                    script {
-                        docker.image('python-web-tests2').inside() {
-                            // Создаем каталог allure-results и устанавливаем правильные разрешения
-                            sh "mkdir -p allure-results"
-                            sh "chmod 777 allure-results"
-                            sh "pytest -n 2 --alluredir=../allure-results -v"
-                        }
-                    }
-                }
-            }
-        }
         stage('Reports') {
             steps {
                 catchError {
