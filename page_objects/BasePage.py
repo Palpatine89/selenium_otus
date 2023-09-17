@@ -15,8 +15,9 @@ class BasePage:
         self.__config_logger()
 
     def __config_logger(self):
-        project_directory = os.path.dirname(os.path.abspath(__file__))
-        logs_directory = os.path.join(project_directory, "..", "logs")
+        project_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        logs_directory = os.path.join(project_directory, "logs")
+        os.makedirs(logs_directory, exist_ok=True)
         log_file_path = os.path.join(logs_directory, f"{self.browser.test_name}.log")
         self.logger = logging.getLogger(type(self).__name__)
         file_handler = logging.FileHandler(log_file_path)
